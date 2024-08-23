@@ -44,6 +44,13 @@ jobs:
             echo 'INHERIT += "rm_work"' >> conf/auto.conf
           fi
           echo 'DISTRO_FEATURES:remove = "alsa bluetooth usbgadget usbhost wifi nfs zeroconf pci 3g nfc x11 opengl ptest wayland vulkan"' >> conf/local.conf
+      - name: Cache downloads
+        if: ${{ runner.environment == 'github-hosted' }}
+        uses: actions/cache@v4
+        with:
+          path: |
+            build/downloads
+          key: ${{ runner.os }}-build
       - name: Build barebox
         run: |
           source poky/oe-init-build-env build
